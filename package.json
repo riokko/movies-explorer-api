@@ -1,9 +1,26 @@
 {
-  "name": "movies-explorer-api",
-  "version": "1.0.0",
-  "description": "backend for movies-project",
-  "main": "app.js",
-  "repository": "https://github.com/riokko/movies-explorer-api.git",
-  "author": "Daria Barova <breya@yandex.ru>",
-  "license": "MIT"
+    "name": "movies-explorer-api",
+    "version": "1.0.0",
+    "description": "backend for movies-project",
+    "main": "app.js",
+    "repository": "https://github.com/riokko/movies-explorer-api.git",
+    "author": "Daria Barova <breya@yandex.ru>",
+    "license": "MIT",
+    "scripts": {
+        "start": "node app.js",
+        "dev": "nodemon app.js",
+        "lint": "npx eslint"
+    },
+    "devDependencies": {
+        "eslint": "^7.24.0",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-config-prettier": "^8.2.0",
+        "eslint-plugin-import": "^2.22.1",
+        "nodemon": "^2.0.7",
+        "prettier": "^2.2.1"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "mongoose": "^5.12.3"
+    }
 }

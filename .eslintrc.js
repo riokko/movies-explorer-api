@@ -8,5 +8,3 @@ module.exports = {
         "prefer-arrow-callback": "error",
     },
 };
-
-
