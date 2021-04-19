@@ -40,7 +40,7 @@ const movieSchema = new mongoose.Schema({
         ref: "user",
         required: true,
     },
-    movieId: { type: mongoose.Schema.Types.ObjectId, required: true }, //_id фильма, который содержится в ответе сервиса MoviesExplorer.
+    movieId: { type: Number, required: true }, // _id фильма, который содержится в ответе сервиса MoviesExplorer.
     nameRU: { type: String, required: true }, // название фильма на русском языке
     nameEN: { type: String, required: true }, // название фильма на английском языке
 });

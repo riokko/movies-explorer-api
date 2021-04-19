@@ -9,11 +9,11 @@ const {
 moviesRouter.get("/", getMovies);
 moviesRouter.post("/", createMovie);
 moviesRouter.delete(
-    "/movieId",
+    "/:movId",
     celebrate({
         params: Joi.object()
             .keys({
-                cardId: Joi.string().required().length(24).hex(),
+                movId: Joi.string().required(),
             })
             .unknown(true),
     }),

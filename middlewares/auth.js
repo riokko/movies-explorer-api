@@ -1,11 +1,13 @@
-const jwt = require("jsonwebtoken");
-const { AuthError } = require("../errors/errors");
 require("dotenv").config();
+const jwt = require("jsonwebtoken");
+const AuthError = require("../errors/AuthError");
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
+// eslint-disable-next-line consistent-return
 module.exports = (req, res, next) => {
     const { authorization } = req.headers;
+
     if (!authorization || !authorization.startsWith("Bearer ")) {
         throw new AuthError("Необходима авторизация");
     }
@@ -20,7 +22,6 @@ module.exports = (req, res, next) => {
     } catch (err) {
         return res.status(401).send({ message: "Необходима авторизация" });
     }
-
     req.user = payload;
     next();
 };

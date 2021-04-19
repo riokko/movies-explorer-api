@@ -1,10 +1,8 @@
 const Movie = require("../models/movie");
 
-const {
-    NotFoundError,
-    BadRequestError,
-    AuthError,
-} = require("../errors/errors");
+const ForbiddenError = require("../errors/ForbiddenError");
+const NotFoundError = require("../errors/NotFoundError");
+const BadRequestError = require("../errors/BadRequestError");
 
 const getMovies = (req, res, next) => {
     Movie.find({})
@@ -21,10 +19,10 @@ const createMovie = (req, res, next) => {
         description,
         image,
         trailer,
+        movieId,
         nameRU,
         nameEN,
         thumbnail,
-        movieId,
     } = req.body;
     const owner = req.user._id;
 
@@ -36,10 +34,10 @@ const createMovie = (req, res, next) => {
         description,
         image,
         trailer,
+        movieId,
         nameRU,
         nameEN,
         thumbnail,
-        movieId,
         owner,
     })
         .then((movie) => {
@@ -52,18 +50,20 @@ const createMovie = (req, res, next) => {
 };
 
 const removeMovie = (req, res, next) => {
-    Movie.findByIdAndRemove(req.params.movieId)
+    console.log("movie");
+    Movie.findByIdAndRemove(req.params.movId)
         .then((movie) => {
+            console.log(movie);
             if (!movie) {
                 throw new NotFoundError("Фильм с таким ID не найден");
             } else if (
                 JSON.stringify(movie.owner) !== JSON.stringify(req.user._id)
             ) {
                 return Promise.reject(
-                    new AuthError("Вы не являетесь автором фильма")
+                    new ForbiddenError("Вы не являетесь автором фильма")
                 );
             } else {
-                return res.send(movie);
+                return res.status(200).send(movie);
             }
         })
         .catch((err) => {

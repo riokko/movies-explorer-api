@@ -2,19 +2,19 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
-const {
-    NotFoundError,
-    BadRequestError,
-    AuthError,
-    ConflictError,
-} = require("../errors/errors");
+const NotFoundError = require("../errors/NotFoundError");
+const BadRequestError = require("../errors/BadRequestError");
+const AuthError = require("../errors/AuthError");
+const ConflictError = require("../errors/ConflictError");
+
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getProfile = (req, res, next) => {
     User.findById(req.user._id)
         .then((user) => {
             if (user) {
-                res.status(200).send(user.email, user.name);
+                const { name, email } = user;
+                res.status(200).send({ email, name });
             }
         })
         .catch((err) => {
@@ -37,7 +37,7 @@ const updateProfile = (req, res, next) => {
             if (!user) {
                 throw new NotFoundError("Нет пользователя с таким id");
             } else {
-                res.status(200).send(user.email, user.name);
+                res.status(200).send({ email, name });
             }
         })
         .catch((err) => {
@@ -66,8 +66,8 @@ const createUser = (req, res, next) => {
                     }
                     res.status(201).send({
                         _id: user._id,
-                        name: user.name,
-                        email: user.email,
+                        name,
+                        email,
                     });
                 })
                 .catch((e) => {
