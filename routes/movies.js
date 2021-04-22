@@ -34,8 +34,7 @@ moviesRouter.delete(
     params: Joi.object()
       .keys({
         movId: Joi.string().required().hex().length(24),
-      })
-      .unknown(true),
+      }),
   }),
   removeMovie,
 );

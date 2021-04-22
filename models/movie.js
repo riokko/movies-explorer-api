@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { isURL } = require('validator');
 
+const { urlErrorMessage } = require('../errors/errorMessages');
+
 const movieSchema = new mongoose.Schema({
   country: { type: String, required: true }, // страна создания фильма
   director: { type: String, required: true }, // режиссёр фильма
@@ -13,7 +15,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => isURL(value),
-      message: (props) => `${props.value} не является адресом URL`,
+      message: (props) => `${props.value} ${urlErrorMessage}`,
     },
   },
   trailer: {
@@ -22,7 +24,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => isURL(value),
-      message: (props) => `${props.value} не является адресом URL`,
+      message: (props) => `${props.value} ${urlErrorMessage}`,
     },
   },
   thumbnail: {
@@ -31,7 +33,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => isURL(value),
-      message: (props) => `${props.value} не является адресом URL`,
+      message: (props) => `${props.value} ${urlErrorMessage}`,
     },
   },
   owner: {
@@ -39,6 +41,7 @@ const movieSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
     required: true,
+    select: false,
   },
   // _id фильма, кот. содержится в ответе сервиса MoviesExplorer
   movieId: { type: Number, required: true },

@@ -7,6 +7,9 @@ const usersRouter = require('./users');
 const moviesRouter = require('./movies');
 const auth = require('../middlewares/auth');
 
+const NotFoundError = require('../errors/NotFoundError');
+const { notFoundMessage } = require('../errors/errorMessages');
+
 router.post(
   '/signup',
   celebrate({
@@ -31,5 +34,8 @@ router.post(
 
 router.use('/users', auth, usersRouter);
 router.use('/movies', auth, moviesRouter);
+router.use('*', (req, res, next) => {
+  next(new NotFoundError(notFoundMessage));
+});
 
 module.exports = router;

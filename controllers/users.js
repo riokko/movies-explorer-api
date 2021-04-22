@@ -10,7 +10,6 @@ const {
   notFoundMessage,
   badRequestMessage,
   conflictMessage,
-  unauthorizedMessage,
   notValidMessage,
 } = require('../errors/errorMessages');
 
@@ -19,10 +18,11 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const getProfile = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
-      if (user) {
-        const { name, email } = user;
-        res.status(200).send({ email, name });
+      if (!user) {
+        throw new NotFoundError(notFoundMessage);
       }
+      const { name, email } = user;
+      res.status(200).send({ email, name });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -35,6 +35,9 @@ const getProfile = (req, res, next) => {
 
 const updateProfile = (req, res, next) => {
   const { email, name } = req.body;
+  if (!name || !email) {
+    throw new BadRequestError(badRequestMessage);
+  }
   User.findOne({ email })
     .then((user) => {
       if (user) {
@@ -48,9 +51,8 @@ const updateProfile = (req, res, next) => {
         .then((currentUser) => {
           if (!currentUser) {
             throw new NotFoundError(notFoundMessage);
-          } else {
-            res.status(200).send({ email, name });
           }
+          res.status(200).send({ email, name });
         })
         .catch((err) => {
           if (err.name === 'CastError' || err.name === 'ValidationError') {
@@ -78,7 +80,7 @@ const createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError(badRequestMessage));
+        throw new BadRequestError(badRequestMessage);
       }
       next(err);
     });
@@ -106,9 +108,7 @@ const login = (req, res, next) => {
           );
           res.status(201).send({ token });
         })
-        .catch(() => {
-          next(new AuthError(unauthorizedMessage));
-        });
+        .catch(next);
     })
     .catch(next);
 };
