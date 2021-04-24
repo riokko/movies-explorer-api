@@ -43,7 +43,7 @@ const updateProfile = (req, res, next) => {
       if (user) {
         throw new ConflictError(conflictMessage);
       }
-      User.findByIdAndUpdate(
+      return User.findByIdAndUpdate(
         req.user._id,
         { email, name },
         { new: true, runValidators: true, context: 'query' },

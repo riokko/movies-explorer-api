@@ -54,27 +54,25 @@ const createMovie = (req, res, next) => {
         owner,
       })
         .then((movie) => {
-          if (!movie) {
-            throw new ConflictError(conflictMessage);
+          if (movie) {
+            res.send({
+              country,
+              director,
+              duration,
+              year,
+              description,
+              image,
+              trailer,
+              movieId,
+              nameRU,
+              nameEN,
+              thumbnail,
+            });
           }
-          res.send({
-            country,
-            director,
-            duration,
-            year,
-            description,
-            image,
-            trailer,
-            movieId,
-            nameRU,
-            nameEN,
-            thumbnail,
-          });
         })
         .catch((err) => {
           if (
-            err.name === 'CastError'
-                        || err.name === 'ValidationError'
+            err.name === 'CastError' || err.name === 'ValidationError'
           ) {
             throw new BadRequestError(badRequestMessage);
           }
