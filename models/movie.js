@@ -4,7 +4,7 @@ const { isURL } = require('validator');
 const { urlErrorMessage } = require('../errors/errorMessages');
 
 const movieSchema = new mongoose.Schema({
-  country: { type: String, required: true }, // страна создания фильма
+  country: { type: String || null }, // страна создания фильма
   director: { type: String, required: true }, // режиссёр фильма
   duration: { type: Number, required: true }, // длительность фильма
   year: { type: String, required: true }, // год выпуска фильма
@@ -27,15 +27,6 @@ const movieSchema = new mongoose.Schema({
       message: (props) => `${props.value} ${urlErrorMessage}`,
     },
   },
-  thumbnail: {
-    // ссылка на миниатюрное изображение постера к фильму
-    type: String,
-    required: true,
-    validate: {
-      validator: (value) => isURL(value),
-      message: (props) => `${props.value} ${urlErrorMessage}`,
-    },
-  },
   owner: {
     // _id пользователя, который сохранил фильм
     type: mongoose.Schema.Types.ObjectId,
@@ -46,7 +37,7 @@ const movieSchema = new mongoose.Schema({
   // _id фильма, кот. содержится в ответе сервиса MoviesExplorer
   movieId: { type: Number, required: true },
   nameRU: { type: String, required: true }, // название фильма на русском языке
-  nameEN: { type: String, required: true }, // название фильма на английском языке
+  nameEN: { type: String || null }, // название фильма на английском языке
 });
 
 module.exports = mongoose.model('movie', movieSchema);

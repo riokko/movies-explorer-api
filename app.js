@@ -12,7 +12,7 @@ const errorHandler = require('./middlewares/errorHandler');
 const { DB_ADDRESS, limiter, options } = require('./utils/config');
 
 const app = express();
-const { PORT = 3000, DB = DB_ADDRESS } = process.env;
+const { PORT = 3001, DB = DB_ADDRESS } = process.env;
 
 connect(DB, {
   useNewUrlParser: true,
@@ -34,4 +34,7 @@ app.use(errors());
 app.use(errorLogger);
 app.use(errorHandler);
 
-app.listen(PORT);
+app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
+  console.log(`App listening on port ${PORT}`);
+});

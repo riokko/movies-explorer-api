@@ -31,7 +31,6 @@ const createMovie = (req, res, next) => {
     movieId,
     nameRU,
     nameEN,
-    thumbnail,
   } = req.body;
   const owner = req.user._id;
   Movie.findOne({ movieId })
@@ -50,7 +49,6 @@ const createMovie = (req, res, next) => {
         movieId,
         nameRU,
         nameEN,
-        thumbnail,
         owner,
       })
         .then((movie) => {
@@ -66,7 +64,6 @@ const createMovie = (req, res, next) => {
               movieId,
               nameRU,
               nameEN,
-              thumbnail,
             });
           }
         })
