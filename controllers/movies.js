@@ -33,7 +33,7 @@ const createMovie = (req, res, next) => {
     nameEN,
   } = req.body;
   const owner = req.user._id;
-  Movie.findOne({ movieId })
+  Movie.findOne({ owner: req.user._id, movieId })
     .then((data) => {
       if (data) {
         throw new ConflictError(conflictMessage);
@@ -52,20 +52,7 @@ const createMovie = (req, res, next) => {
         owner,
       })
         .then((movie) => {
-          if (movie) {
-            res.send({
-              country,
-              director,
-              duration,
-              year,
-              description,
-              image,
-              trailer,
-              movieId,
-              nameRU,
-              nameEN,
-            });
-          }
+          res.send(movie);
         })
         .catch((err) => {
           if (
@@ -82,14 +69,14 @@ const createMovie = (req, res, next) => {
 
 const removeMovie = (req, res, next) => {
   Movie.findOne({
-    _id: req.params.movId,
+    _id: req.params.id,
   })
     .select('+owner')
     .then((movie) => {
       if (!movie) {
         throw new NotFoundError(notFoundMessage);
       } else if (movie.owner.toString() === req.user._id) {
-        Movie.findByIdAndRemove(req.params.movId)
+        Movie.findByIdAndRemove(req.params.id)
           .then((movieForRemoving) => {
             if (!movieForRemoving) {
               throw new NotFoundError(notFoundMessage);

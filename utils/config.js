@@ -6,7 +6,7 @@ const limiter = rateLimit({
   max: 100,
 });
 const options = {
-  origin: ['http://localhost:3000'],
+  origin: ['http://localhost:3000', 'https://movie.nomoredomains.icu'],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   preflightContinue: false,
   optionsSuccessStatus: 204,

@@ -29,11 +29,11 @@ moviesRouter.post(
   createMovie,
 );
 moviesRouter.delete(
-  '/:movId',
+  '/:id',
   celebrate({
     params: Joi.object()
       .keys({
-        movId: Joi.string().required().hex().length(24),
+        id: Joi.string().required().hex().length(24),
       }),
   }),
   removeMovie,
