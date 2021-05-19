@@ -14,15 +14,15 @@ const { DB_ADDRESS, limiter, options } = require('./utils/config');
 const app = express();
 const { PORT = 3001, DB = DB_ADDRESS } = process.env;
 
+app.use('*', cors(options));
+
 connect(DB, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
-
 app.use(helmet());
-app.use('*', cors(options));
 app.use(express.json());
 
 app.use(requestLogger);
